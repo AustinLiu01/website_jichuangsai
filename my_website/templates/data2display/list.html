@@ -1,0 +1,84 @@
+<!-- extends表明此页面继承自 base.html 文件 -->
+{% extends "base.html" %}
+{% load staticfiles %}
+
+<!-- 写入 base.html 中定义的 title -->
+{% block title %}
+    首页
+{% endblock title %}
+
+<!-- 写入 base.html 中定义的 content -->
+{% block content %}
+
+<!-- 定义放置数据标题的div容器 -->
+<table class="table table-hover">
+    <div class="row" style="margin-top: 50px;">
+        <div class="offset-md-11">
+            <thead align="center">
+                <tr>
+                    <th>售出时间</th>
+                    <th>中药名称</th>
+                    <th>售出重量/g</th>
+                    <th>售出总价/元</th>
+                </tr>
+            </thead>
+            <tbody align="center">
+            {% if user.is_authenticated %}
+                {% for FromWiFi in data %}
+                <tr>
+                    <td>{{ FromWiFi.updated}}</td>
+                    <td>{{ FromWiFi.name }}</td>
+                    <td>{{ FromWiFi.weight}}</td>
+                    <td>{{ FromWiFi.price}}</td>
+                </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td>请登录以查看数据</td>
+                </tr>
+            {% endif %}
+            </tbody>
+        </div>
+    </div>
+</table>
+<!-- 页码导航 -->
+<div class="pagination row">
+    <div class="m-auto">
+        <span class="step-links">
+            {% if user.is_authenticated %}
+                <!-- 如果不是第一页，则显示上翻按钮 -->
+                {% if data.has_previous %}
+                    <a href="?page=1" class="btn btn-success">
+                        &laquo; 1
+                    </a>
+                    <span>...</span>
+                    <a href="?page={{ data.previous_page_number }}"
+                       class="btn btn-secondary">
+                        {{ data.previous_page_number }}
+                    </a>
+                {% endif %}
+
+                <!-- 当前页面 -->
+                <span class="current btn btn-danger btn-lg">
+                    {{ data.number }}
+                </span>
+
+                <!-- 如果不是最末页，则显示下翻按钮 -->
+                {% if data.has_next %}
+                    <a href="?page={{ data.next_page_number }}"
+                       class="btn btn-secondary">
+                        {{ data.next_page_number }}
+                    </a>
+                    <span>...</span>
+                    <a href="?page={{ data.paginator.num_pages }}"
+                       class="btn btn-success">
+                        {{ data.paginator.num_pages }} &raquo;
+                    </a>
+                {% endif %}
+            {% else %}
+                <span class="current btn btn-danger btn-lg">1</span>
+            {% endif %}
+        </span>
+    </div>
+</div>
+{% endblock content %}

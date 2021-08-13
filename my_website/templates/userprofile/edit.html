@@ -1,0 +1,37 @@
+{% extends "base.html" %} {% load staticfiles %}
+{% block title %} 用户信息 {% endblock title %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <br>
+            <div class="col-md-4">用户名: {{ user.username }}</div>
+            <br>
+            {% if profile.avatar %}
+                <div class="col-md-4">数据统计图</div>
+                <img src="{{ profile.avatar.url }}" style="max-width: 100%; border-radius: 0%;" class="col-md-4">
+            {% else %}
+                <h5 class="col-md-4">暂无统计数据</h5>
+            {% endif %}
+            <br>
+            <form ... enctype="multipart/form-data">{% csrf_token %}
+                <!-- avatar -->
+                <div class="form-group">
+                    <label for="avatar">数据生成</label>
+                    <input type="file" class="form-control-file" name="avatar" id="avatar">
+                </div>
+            <form ... enctype="multipart/form-data">
+                {% csrf_token %}
+                <!--
+                <div class="form-group col-md-4">
+                    <label for="phone">电话</label>
+                    <input type="text" class="form-control" id="phone" name="phone" value="{{ profile.phone }}">
+                </div>-->
+                
+                <!-- 数据生成 -->
+                <button type="submit" class="btn btn-primary">数据生成</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}
